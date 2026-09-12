@@ -1,1 +1,79 @@
+import React, { useState } from 'react';
+
+export default function PipelineBoard() {
+  // Mock data representing the centralized operating system
+  const [jobs, setJobs] = useState([
+    { id: 1, name: "John Doe", details: "2023 Ford F-150", tags: ["$199 Carbon"], stage: "New Leads", value: 199 },
+    { id: 2, name: "Sarah Smith", details: "Commercial Flat Glass", tags: ["Consultation Needed"], stage: "Consultation", value: 4500 },
+    { id: 3, name: "Mike Johnson", details: "Tesla Model 3", tags: ["Ceramic", "PPF Front"], stage: "Scheduled", value: 1250 },
+    { id: 4, name: "Wichita Police Dept", details: "3x Ford Explorers", tags: ["Fleet Wrap"], stage: "In Bay", value: 8400 },
+    { id: 5, name: "David Clark", details: "2024 Corvette", tags: ["Ceramic Coating"], stage: "Review Requested", value: 1800 }
+  ]);
+
+  const stages = ["New Leads", "Consultation", "Scheduled", "In Bay", "Review Requested"];
+
+  return (
+    <div className="flex flex-col h-screen bg-gray-100 font-sans text-gray-900 overflow-hidden">
+      {/* Global KPI Header */}
+      <header className="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center shadow-sm z-10">
+        <h1 className="text-xl font-bold text-gray-800">Shop Pipeline</h1>
+        <div className="flex space-x-6 text-sm">
+          <div className="flex flex-col"><span className="text-gray-500">Active Jobs</span><span className="font-bold">14</span></div>
+          <div className="flex flex-col"><span className="text-gray-500">Pipeline Value</span><span className="font-bold text-green-600">$16,149</span></div>
+        </div>
+      </header>
+
+      {/* Kanban Board Area */}
+      <div className="flex-1 overflow-x-auto p-6">
+        <div className="flex space-x-6 h-full items-start">
+          {stages.map(stage => (
+            <PipelineColumn key={stage} title={stage} jobs={jobs.filter(j => j.stage === stage)} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PipelineColumn({ title, jobs }) {
+  return (
+    <div className="flex flex-col w-80 bg-gray-50 rounded-lg border border-gray-200 flex-shrink-0 max-h-full">
+      {/* Column Header */}
+      <div className="p-3 border-b border-gray-200 flex justify-between items-center bg-gray-100 rounded-t-lg">
+        <h2 className="font-semibold text-gray-700">{title}</h2>
+        <span className="bg-gray-200 text-gray-600 text-xs font-bold px-2 py-1 rounded-full">
+          {jobs.length}
+        </span>
+      </div>
+
+      {/* Cards Container */}
+      <div className="flex-1 overflow-y-auto p-3 space-y-3">
+        {jobs.map(job => (
+          <JobCard key={job.id} job={job} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function JobCard({ job }) {
+  return (
+    <div className="bg-white p-4 rounded-md shadow-sm border border-gray-200 cursor-pointer hover:border-blue-500 hover:shadow-md transition-all">
+      <div className="flex justify-between items-start mb-2">
+        <h3 className="font-bold text-gray-800 text-sm">{job.name}</h3>
+        <span className="text-xs font-semibold text-green-700">${job.value}</span>
+      </div>
+      
+      <p className="text-xs text-gray-600 mb-3">{job.details}</p>
+      
+      <div className="flex flex-wrap gap-1">
+        {job.tags.map(tag => (
+          <span key={tag} className="px-2 py-1 bg-blue-50 text-blue-700 text-[10px] font-medium rounded-md uppercase tracking-wider">
+            {tag}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
