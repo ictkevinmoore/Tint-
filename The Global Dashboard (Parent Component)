@@ -1,1 +1,57 @@
+import React, { useState } from 'react';
+import UnifiedInbox from './UnifiedInbox';
+import PipelineBoard from './PipelineBoard';
+
+export default function GlobalDashboard() {
+  // 1. The Master State
+  const [leads, setLeads] = useState([
+    { id: 1, name: "John Doe", vehicle: "2023 Ford F-150", stage: "New Leads", value: 199, phone: "(316) 555-0199" },
+    { id: 2, name: "Sarah Smith", vehicle: "Commercial Flat Glass", stage: "Manual Reply", value: 4500, phone: "(316) 555-0200" }
+  ]);
+
+  // View toggle: Are we looking at the Inbox or the Board?
+  const [currentView, setCurrentView] = useState('inbox');
+
+  // 2. The State Updater Function
+  const updateLeadStage = (leadId, newStage) => {
+    // Update the React UI state instantly
+    setLeads(currentLeads => 
+      currentLeads.map(lead => 
+        lead.id === leadId ? { ...lead, stage: newStage } : lead
+      )
+    );
+
+    // TODO: Trigger a fetch/axios call here to update your Supabase/Node backend
+    // fetch(`/api/leads/${leadId}`, { method: 'PATCH', body: JSON.stringify({ stage: newStage }) });
+  };
+
+  return (
+    <div className="flex flex-col h-screen bg-gray-900">
+      {/* Top Navigation / View Switcher */}
+      <nav className="p-4 bg-gray-800 text-white flex space-x-4">
+        <button 
+          className={`px-4 py-2 rounded ${currentView === 'inbox' ? 'bg-blue-600' : 'bg-gray-700'}`}
+          onClick={() => setCurrentView('inbox')}
+        >
+          SMS Inbox
+        </button>
+        <button 
+          className={`px-4 py-2 rounded ${currentView === 'board' ? 'bg-blue-600' : 'bg-gray-700'}`}
+          onClick={() => setCurrentView('board')}
+        >
+          Pipeline Board
+        </button>
+      </nav>
+
+      {/* Render the selected view, passing down the master state and updater function */}
+      <div className="flex-1 overflow-hidden">
+        {currentView === 'inbox' ? (
+          <UnifiedInbox leads={leads} updateLeadStage={updateLeadStage} />
+        ) : (
+          <PipelineBoard leads={leads} />
+        )}
+      </div>
+    </div>
+  );
+}
 
