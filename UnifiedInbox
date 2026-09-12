@@ -1,1 +1,39 @@
+// Inside your UnifiedInbox component file
+
+function ActionPanel({ activeLeadId, updateLeadStage }) {
+  return (
+    <div className="w-80 border-l border-gray-200 bg-gray-50 p-4 overflow-y-auto">
+      <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">
+        Pipeline Actions
+      </h3>
+      
+      <div className="space-y-3">
+        {/* The onClick event fires the function passed from GlobalDashboard */}
+        <button 
+          onClick={() => updateLeadStage(activeLeadId, 'Consultation')}
+          className="w-full text-left px-4 py-3 bg-white border border-gray-200 rounded-md shadow-sm hover:border-blue-500 transition-all"
+        >
+          <span className="block font-medium">📋 Move to Consultation</span>
+          <span className="text-xs text-gray-500">Draft proposal for commercial/PPF</span>
+        </button>
+
+        <button 
+          onClick={() => updateLeadStage(activeLeadId, 'In Bay')}
+          className="w-full text-left px-4 py-3 bg-white border border-gray-200 rounded-md shadow-sm hover:border-blue-500 transition-all"
+        >
+          <span className="block font-medium">📅 Move to Bay</span>
+          <span className="text-xs text-gray-500">Vehicle is actively being worked on</span>
+        </button>
+
+        <button 
+          onClick={() => updateLeadStage(activeLeadId, 'Review Requested')}
+          className="w-full text-left px-4 py-3 bg-white border border-gray-200 rounded-md shadow-sm hover:border-green-500 transition-all"
+        >
+          <span className="block font-medium text-green-700">⭐ Request Review</span>
+          <span className="text-xs text-gray-500">Trigger automated 5-star Google request</span>
+        </button>
+      </div>
+    </div>
+  );
+}
 
